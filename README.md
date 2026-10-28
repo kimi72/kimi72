@@ -1,4 +1,4 @@
-##你好 👋
+kimi72.github.io
 
 <!--
 **kimi72/kimi72**是a ✨ _special_ ✨ 存储库，因为它的“README.md”(此文件)出现在GitHub配置文件中。
