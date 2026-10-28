@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dsh-startup-screen · 启动动画</title>
+
+<link rel="stylesheet" href="lib/splash.css">
+
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #12131a; }
+  
+  /* 遮罩：用你的点击来解锁声音 */
+  #audio-overlay {
+    position: fixed; inset: 0; z-index: 2147483647; 
+    background: rgba(0, 0, 0, 0.95); color: #fff;
+    display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center;
+    font-size: 16px; letter-spacing: 2px; cursor: pointer; font-family: sans-serif;
+  }
+</style>
+</head>
+<body>
+
+
+<!-- 挂载点 -->
+<div id="dsh-startup-root" class="dsu-root dsu-boot"></div>
+
+<script>
+  window.__DSH_STARTUP_SCRIPT_URL__ = 'lib/splash.js';
+  window.__DSH_STARTUP__ = {
+    enabled: true,
+    mode: 'always',
+    theme: 'light',
+    speed: 1,
+    requireInteraction: true,
+    allowSkip: true,
+    sound: true,          // 开启提示音效
+    voice: true,          // 开启语音播报
+    voiceSource: 'asset', // 强制读取你的 line-x.mp3
+    identity: 'JOYCE MOORE',
+    identityId: '0087',
+    accessLevel: '3',
+    brand1: 'DEEPSEEK',
+    brand2: 'SYNTHESIZE INTELLIGENCE',
+    brand3a: 'HARNESS',
+    brand3b: 'OS',
+    orgZh: '深度求索',
+    orgEn: 'DEEPSEEK',
+    orgSub: 'DEEPSEEK HARNESS',
+    welcomeBox: 'DEEPSEEK HARNESS',
+    footer: 'POWERED BY DEEPSEEK',
+    accent: '#ff7500',
+    glitchA: '#ff3b30',
+    glitchB: '#2971b8'
+  };
+  document.documentElement.classList.add('dsu-lock');
+
+  // 关键逻辑：点击遮罩，激活浏览器的声音许可
+  document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('audio-overlay');
+    overlay.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      
+      // 强行唤醒 splash.js 里的音频引擎
+      if (window.__DSH_STARTUP_API__ && window.__DSH_STARTUP_API__.speak) {
+        // 伪造一个用户交互事件，骗过浏览器
+        document.body.click(); 
+      }
+    });
+  });
+</script>
+
+<script defer src="lib/splash.js"></script>
+<link rel="stylesheet" href="lib/splash.css">
+...
+<script src="lib/splash.js"></script>
+</body>
+</html>
